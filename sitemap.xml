@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://leprofenappui.github.io/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_reseauxsociaux_cyberviolences.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_reseauxsociaux_quiz_cyberharcelement.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_reseauxsociaux_motcles.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_python_qcm_print.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_localisation_quiz_confidentialite.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_localisation_escapegame.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://leprofenappui.github.io/jeu/snt_binaire_escapegame.html</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
