@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz — Harcèlement & Cyberharcèlement · SNT</title>
+<style>
+:root{
+  --bg:#1A1A2E;--surface:#22223A;--surface2:#2C2C4A;
+  --text:#F0F0FF;--text2:#B0B0D0;--text3:#7070A0;
+  --green:#2E7D32;--green-l:#1B5E20;--green-h:#43A047;
+  --orange:#E65100;--orange-l:#BF360C;--orange-h:#EF6C00;
+  --red:#B71C1C;--red-l:#7F0000;--red-h:#C62828;
+  --accent:#7F77DD;
+  --radius:14px;
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.5;color:var(--text);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem}
+.wrap{width:100%;max-width:700px}
+.hidden{display:none!important}
+
+/* ── Accueil ── */
+.home{text-align:center;padding:2.5rem 1rem}
+.home-logo{font-size:4rem;margin-bottom:1rem}
+.home h1{font-size:1.8rem;font-weight:600;margin-bottom:.5rem}
+.home .source{font-size:12px;color:var(--text3);max-width:480px;margin:0 auto 1.5rem;line-height:1.7}
+.home .source strong{color:var(--text2)}
+.start-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:14px 36px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;width:100%}
+.start-btn:hover{opacity:.88}
+
+/* ── Barre haut ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:12px;flex-wrap:wrap}
+.q-label{font-size:13px;color:var(--text3);font-weight:500}
+.prog-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.score-badge{background:var(--surface);border:1px solid var(--surface2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+
+/* ── Carte question ── */
+.q-card{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;min-height:130px;display:flex;flex-direction:column;justify-content:center}
+.q-num{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.q-text{font-size:1.05rem;font-weight:500;color:var(--text);line-height:1.6}
+.q-stat{font-size:13px;color:var(--text2);margin-top:.4rem}
+
+/* ── Réponses ── */
+.answers{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem}
+.ans-btn{border:none;border-radius:var(--radius);padding:14px 18px;font-size:15px;font-weight:500;cursor:pointer;text-align:left;width:100%;transition:all .18s;display:flex;align-items:center;gap:12px;color:#fff;position:relative;overflow:hidden}
+.ans-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .15s}
+.ans-btn:hover:not(:disabled)::before{background:rgba(255,255,255,.08)}
+.ans-btn:disabled{cursor:default}
+.ans-a{background:var(--green);box-shadow:0 2px 8px rgba(46,125,50,.3)}
+.ans-b{background:var(--orange);box-shadow:0 2px 8px rgba(230,81,0,.3)}
+.ans-c{background:var(--red);box-shadow:0 2px 8px rgba(183,28,28,.3)}
+.ans-a:hover:not(:disabled){background:var(--green-h)}
+.ans-b:hover:not(:disabled){background:var(--orange-h)}
+.ans-c:hover:not(:disabled){background:var(--red-h)}
+.ans-btn.correct{outline:3px solid #fff;opacity:1}
+.ans-btn.wrong{opacity:.45}
+.ans-letter{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ans-text{flex:1}
+
+/* ── Feedback ── */
+.feedback{border-radius:var(--radius);padding:12px 16px;font-size:13px;display:flex;align-items:flex-start;gap:10px;line-height:1.55;margin-bottom:1rem}
+.feedback.ok{background:#1B5E2055;border:1px solid var(--green);color:#A5D6A7}
+.feedback.ko{background:#7F000055;border:1px solid var(--red);color:#EF9A9A}
+.fb-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.next-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:12px;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s;margin-top:4px}
+.next-btn:hover{opacity:.88}
+
+/* ── Résultat ── */
+.result{text-align:center;padding:2.5rem 1rem}
+.res-medal{font-size:5rem;display:block;margin-bottom:.75rem}
+.result h2{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.res-score{font-size:3rem;font-weight:800;color:var(--accent);margin:.5rem 0}
+.result p{color:var(--text2);font-size:14px;margin-bottom:1.5rem}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.rstat{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:12px 8px;text-align:center}
+.rstat-val{font-size:1.4rem;font-weight:700;color:var(--text);display:block}
+.rstat-lbl{font-size:11px;color:var(--text3)}
+.replay-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:13px;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s}
+.replay-btn:hover{opacity:.88}
+
+/* ── Review ── */
+.review-item{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;text-align:left}
+.review-q{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.review-answer{font-size:13px;display:flex;align-items:center;gap:6px}
+.review-answer.ok{color:#A5D6A7}
+.review-answer.ko{color:#EF9A9A}
+
+@media(max-width:480px){.res-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ACCUEIL -->
+<div id="home">
+  <div class="home">
+    <div class="home-logo">📊</div>
+    <h1>Harcèlement &amp; Cyberharcèlement</h1>
+    <p class="source">Quiz basé sur l'enquête <strong>Audirep / e-Enfance · 3018</strong> — mai 2025<br>
+    1 602 binômes parents-enfants de 6 à 18 ans interrogés (3 204 répondants au total)</p>
+    <button class="start-btn" onclick="start()">Lancer le quiz →</button>
+  </div>
+</div>
+
+<!-- JEU -->
+<div id="game" class="hidden">
+  <div class="top-bar">
+    <span class="q-label" id="qlabel">1 / 10</span>
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <span class="score-badge">⭐ <span id="sdisp">0</span></span>
+  </div>
+  <div class="q-card" id="qcard">
+    <div class="q-num" id="qnum"></div>
+    <div class="q-text" id="qtext"></div>
+    <div class="q-stat" id="qstat"></div>
+  </div>
+  <div class="answers" id="answers"></div>
+  <div id="fb" class="hidden"></div>
+  <button class="next-btn hidden" id="next-btn" onclick="nextQ()">Question suivante →</button>
+</div>
+
+<!-- RÉSULTAT -->
+<div id="result" class="hidden result"></div>
+
+</div>
+
+<script>
+const QS = [
+  {
+    num:"Question 1",
+    text:"Quel pourcentage d'élèves ont été confrontés à du harcèlement (insultes, moqueries, bousculades…) ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["35 %","52 %","18 %"],
+    ok:0,
+    expl:"35 % des enfants de 6 à 18 ans interrogés ont été confrontés à du harcèlement. Dans 71 % des cas, cela s'est produit dans leur établissement scolaire."
+  },
+  {
+    num:"Question 2",
+    text:"Quel pourcentage de lycéens se rendent sur les réseaux sociaux ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["99 %","87 %","74 %"],
+    ok:0,
+    expl:"99 % des lycéens se rendent sur les réseaux sociaux — pratiquement la totalité de cette tranche d'âge."
+  },
+  {
+    num:"Question 3",
+    text:"Quel pourcentage d'élèves en lycée ne tiendraient pas plus d'une heure sans leur smartphone ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["32 %","18 %","47 %"],
+    ok:0,
+    expl:"32 % des lycéens déclarent ne pas pouvoir se passer de leur smartphone plus d'une heure — signe d'une forte dépendance au numérique."
+  },
+  {
+    num:"Question 4",
+    text:"Quel pourcentage d'enfants ont été confrontés au moins une fois à du cyberharcèlement ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["18 %","35 %","9 %"],
+    ok:0,
+    expl:"18 % des enfants ont été confrontés au moins une fois au cyberharcèlement. Ce chiffre monte à 22 % au lycée et atteint 25 % pour les filles."
+  },
+  {
+    num:"Question 5",
+    text:"Sur quelle application se produit majoritairement le cyberharcèlement selon l'enquête ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["WhatsApp (41 %)","Instagram (33 %)","Snapchat (28 %)"],
+    ok:0,
+    expl:"41 % du cyberharcèlement se produit sur des groupes WhatsApp, dont 25 % sur des groupes WhatsApp de classe spécifiquement."
+  },
+  {
+    num:"Question 6",
+    text:"Parmi les enfants concernés par du harcèlement ou cyberharcèlement, quel pourcentage déclarent en avoir été témoins ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["28 %","37 %","15 %"],
+    ok:0,
+    expl:"37 % des enfants concernés par du harcèlement ou cyberharcèlement. Parmi eux, 28 % déclarent en avoir été témoins sans en être la cible directe."
+  },
+  {
+    num:"Question 7",
+    text:"Quelle est la première raison citée par les victimes pour expliquer le harcèlement qu'elles subissent ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["Jalousie / envie (24 %)","Différences physiques (20 %)","Différence de look (16 %)"],
+    ok:0,
+    expl:"La jalousie ou l'envie est citée en premier (24 %), devant les différences physiques ou handicap (20 %) et la différence de look ou de goûts (16 %)."
+  },
+  {
+    num:"Question 8",
+    text:"Quel pourcentage des auteurs de harcèlement sont des garçons ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["63 %","50 %","78 %"],
+    ok:0,
+    expl:"63 % des auteurs identifiés sont des garçons, qu'ils agissent en groupe ou seuls."
+  },
+  {
+    num:"Question 9",
+    text:"Quel pourcentage d'élèves déclarent être auteurs ou avoir participé à du harcèlement ou cyberharcèlement ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["19 %","35 %","8 %"],
+    ok:0,
+    expl:"19 % des élèves déclarent être auteurs ou avoir participé à du harcèlement ou cyberharcèlement."
+  },
+  {
+    num:"Question 10",
+    text:"Quelle est la première raison donnée par les auteurs pour justifier leur participation au harcèlement ?",
+    stat:"Enquête Audirep / e-Enfance · 3018 — mai 2025",
+    opts:["Effet de groupe (45 %)","Pour rigoler (19 %)","Pour se venger (18 %)"],
+    ok:0,
+    expl:"45 % des auteurs invoquent l'effet de groupe — la pression sociale et l'entraînement collectif — comme première justification."
+  },
+];
+
+let idx=0, score=0, ok=0, ko=0, answered=false, userAnswers=[];
+
+function start(){
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  loadQ();
+}
+
+function loadQ(){
+  answered=false;
+  const q=QS[idx];
+  document.getElementById('qlabel').textContent=(idx+1)+' / '+QS.length;
+  document.getElementById('prog').style.width=((idx)/QS.length*100)+'%';
+  document.getElementById('sdisp').textContent=score;
+  document.getElementById('qnum').textContent=q.num;
+  document.getElementById('qtext').textContent=q.text;
+  document.getElementById('qstat').textContent=q.stat;
+  document.getElementById('fb').className='hidden';
+  document.getElementById('fb').innerHTML='';
+  document.getElementById('next-btn').classList.add('hidden');
+
+  const letters=['A','B','C'];
+  const colors=['ans-a','ans-b','ans-c'];
+  document.getElementById('answers').innerHTML=q.opts.map((o,i)=>
+    `<button class="ans-btn ${colors[i]}" onclick="answer(${i},this)">
+      <span class="ans-letter">${letters[i]}</span>
+      <span class="ans-text">${o}</span>
+    </button>`
+  ).join('');
+}
+
+function answer(i,el){
+  if(answered) return;
+  answered=true;
+  const q=QS[idx];
+  const isOk=(i===q.ok);
+  document.querySelectorAll('.ans-btn').forEach(b=>b.disabled=true);
+  if(isOk){
+    el.classList.add('correct');
+    document.querySelectorAll('.ans-btn').forEach((b,j)=>{if(j!==i) b.classList.add('wrong')});
+    score+=100; ok++;
+    showFb('ok','✅','Correct !',q.expl);
+  } else {
+    el.classList.add('wrong');
+    const correctEl=document.querySelectorAll('.ans-btn')[q.ok];
+    correctEl.classList.add('correct');
+    document.querySelectorAll('.ans-btn').forEach((b,j)=>{if(j!==q.ok&&j!==i) b.classList.add('wrong')});
+    ko++;
+    showFb('ko','❌','Raté ! La bonne réponse était : '+q.opts[q.ok],q.expl);
+  }
+  userAnswers.push({q:q.text,chose:q.opts[i],correct:q.opts[q.ok],ok:isOk});
+  document.getElementById('sdisp').textContent=score;
+  document.getElementById('next-btn').classList.remove('hidden');
+  if(idx+1===QS.length) document.getElementById('next-btn').textContent='Voir les résultats →';
+}
+
+function showFb(type,icon,title,detail){
+  const el=document.getElementById('fb');
+  el.className=`feedback ${type}`;
+  el.innerHTML=`<span class="fb-icon">${icon}</span><div><strong>${title}</strong><br><span style="font-size:12px">${detail}</span></div>`;
+}
+
+function nextQ(){
+  idx++;
+  if(idx>=QS.length){endGame();return;}
+  loadQ();
+}
+
+function endGame(){
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('prog').style.width='100%';
+  const pct=ok/QS.length;
+  const medal=pct===1?'🥇':pct>=.8?'🥈':pct>=.6?'🥉':'📚';
+  const title=pct===1?'Score parfait !':pct>=.8?'Excellent !':pct>=.6?'Bien joué !':'À retravailler !';
+  const msg=pct===1?'Tu maîtrises parfaitement les chiffres du harcèlement numérique.':
+            pct>=.6?'Tu as de bonnes connaissances sur le cyberharcèlement.':
+            'Relis les statistiques de l\'enquête et recommence !';
+  const r=document.getElementById('result');
+  r.classList.remove('hidden');
+  r.innerHTML=`
+<span class="res-medal">${medal}</span>
+<h2>${title}</h2>
+<div class="res-score">${score} pts</div>
+<p>${msg}</p>
+<div class="res-grid">
+  <div class="rstat"><span class="rstat-val">${ok}/${QS.length}</span><span class="rstat-lbl">Bonnes réponses</span></div>
+  <div class="rstat"><span class="rstat-val">${ko}</span><span class="rstat-lbl">Erreurs</span></div>
+  <div class="rstat"><span class="rstat-val">${Math.round(pct*100)} %</span><span class="rstat-lbl">Score</span></div>
+</div>
+<div style="text-align:left;margin-bottom:1.5rem">
+  <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:.75rem">Récapitulatif</p>
+  ${userAnswers.map(a=>`
+  <div class="review-item">
+    <div class="review-q">${a.q}</div>
+    <div class="review-answer ${a.ok?'ok':'ko'}">${a.ok?'✓':'✗'} ${a.chose}${!a.ok?' → Bonne réponse : '+a.correct:''}</div>
+  </div>`).join('')}
+</div>
+<div style="background:#1B5E2033;border:1px solid #2E7D32;border-radius:var(--radius);padding:12px 16px;margin-bottom:1.5rem;text-align:left">
+  <p style="font-size:12px;font-weight:600;color:#A5D6A7;margin-bottom:4px">📞 Besoin d'aide ?</p>
+  <p style="font-size:12px;color:#A5D6A7;line-height:1.6"><strong>3018</strong> — Numéro national contre le cyberharcèlement, gratuit, 7j/7<br>
+  <strong>nonauharcelement.education.gouv.fr</strong> — Plateforme nationale</p>
+</div>
+<button class="replay-btn" onclick="replay()">↺ Rejouer</button>`;
+}
+
+function replay(){
+  idx=0;score=0;ok=0;ko=0;answered=false;userAnswers=[];
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  document.getElementById('sdisp').textContent=0;
+  document.getElementById('prog').style.width='0%';
+  loadQ();
+}
+</script>
+</body>
+</html>
