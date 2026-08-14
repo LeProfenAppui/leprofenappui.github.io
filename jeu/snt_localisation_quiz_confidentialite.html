@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz — Localisation & Vie privée · SNT</title>
+<style>
+:root{
+  --bg:#1A1A2E;--surface:#22223A;--surface2:#2C2C4A;
+  --text:#F0F0FF;--text2:#B0B0D0;--text3:#7070A0;
+  --green:#2E7D32;--green-l:#1B5E20;--green-h:#43A047;
+  --orange:#E65100;--orange-l:#BF360C;--orange-h:#EF6C00;
+  --red:#B71C1C;--red-l:#7F0000;--red-h:#C62828;
+  --blue:#1565C0;--blue-h:#1976D2;
+  --purple:#6A1B9A;--purple-h:#7B1FA2;
+  --accent:#7F77DD;
+  --radius:14px;
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.5;color:var(--text);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem}
+.wrap{width:100%;max-width:700px}
+.hidden{display:none!important}
+
+/* ── Accueil ── */
+.home{text-align:center;padding:2.5rem 1rem}
+.home-logo{font-size:4rem;margin-bottom:1rem}
+.home h1{font-size:1.8rem;font-weight:600;margin-bottom:.5rem}
+.home .subtitle{font-size:14px;color:var(--text2);margin-bottom:.4rem}
+.home .source{font-size:12px;color:var(--text3);max-width:480px;margin:0 auto 1.5rem;line-height:1.7}
+.home .source strong{color:var(--text2)}
+.start-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:14px 36px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;width:100%}
+.start-btn:hover{opacity:.88}
+
+/* ── Barre haut ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:12px;flex-wrap:wrap}
+.q-label{font-size:13px;color:var(--text3);font-weight:500}
+.prog-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.score-badge{background:var(--surface);border:1px solid var(--surface2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+
+/* ── Badge type question ── */
+.q-type-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;border-radius:6px;padding:2px 9px;margin-bottom:.5rem}
+.badge-situation{background:#1565C033;border:1px solid #1976D2;color:#90CAF9}
+.badge-vf{background:#6A1B9A33;border:1px solid #7B1FA2;color:#CE93D8}
+
+/* ── Carte question ── */
+.q-card{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;min-height:130px;display:flex;flex-direction:column;justify-content:center}
+.q-num{font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.q-text{font-size:1.05rem;font-weight:500;color:var(--text);line-height:1.6}
+
+/* ── Réponses ABC ── */
+.answers{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem}
+.ans-btn{border:none;border-radius:var(--radius);padding:14px 18px;font-size:15px;font-weight:500;cursor:pointer;text-align:left;width:100%;transition:all .18s;display:flex;align-items:center;gap:12px;color:#fff;position:relative;overflow:hidden}
+.ans-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .15s}
+.ans-btn:hover:not(:disabled)::before{background:rgba(255,255,255,.08)}
+.ans-btn:disabled{cursor:default}
+.ans-a{background:var(--green);box-shadow:0 2px 8px rgba(46,125,50,.3)}
+.ans-b{background:var(--orange);box-shadow:0 2px 8px rgba(230,81,0,.3)}
+.ans-c{background:var(--red);box-shadow:0 2px 8px rgba(183,28,28,.3)}
+.ans-a:hover:not(:disabled){background:var(--green-h)}
+.ans-b:hover:not(:disabled){background:var(--orange-h)}
+.ans-c:hover:not(:disabled){background:var(--red-h)}
+.ans-btn.correct{outline:3px solid #fff;opacity:1}
+.ans-btn.wrong{opacity:.45}
+.ans-letter{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ans-text{flex:1}
+
+/* ── Réponses VRAI/FAUX ── */
+.vf-row{display:flex;gap:12px;margin-bottom:1rem}
+.vf-btn{flex:1;border:none;border-radius:var(--radius);padding:16px;font-size:16px;font-weight:700;cursor:pointer;color:#fff;transition:all .18s;position:relative;overflow:hidden}
+.vf-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .15s}
+.vf-btn:hover:not(:disabled)::before{background:rgba(255,255,255,.1)}
+.vf-btn:disabled{cursor:default}
+.vf-vrai{background:var(--green);box-shadow:0 2px 8px rgba(46,125,50,.35)}
+.vf-vrai:hover:not(:disabled){background:var(--green-h)}
+.vf-faux{background:var(--red);box-shadow:0 2px 8px rgba(183,28,28,.35)}
+.vf-faux:hover:not(:disabled){background:var(--red-h)}
+.vf-btn.correct{outline:3px solid #fff;opacity:1}
+.vf-btn.wrong{opacity:.45}
+
+/* ── Feedback ── */
+.feedback{border-radius:var(--radius);padding:12px 16px;font-size:13px;display:flex;align-items:flex-start;gap:10px;line-height:1.55;margin-bottom:1rem}
+.feedback.ok{background:#1B5E2055;border:1px solid var(--green);color:#A5D6A7}
+.feedback.ko{background:#7F000055;border:1px solid var(--red);color:#EF9A9A}
+.fb-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.next-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:12px;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s;margin-top:4px}
+.next-btn:hover{opacity:.88}
+
+/* ── Résultat ── */
+.result{text-align:center;padding:2.5rem 1rem}
+.res-medal{font-size:5rem;display:block;margin-bottom:.75rem}
+.result h2{font-size:1.6rem;font-weight:700;margin-bottom:.4rem}
+.res-score{font-size:3rem;font-weight:800;color:var(--accent);margin:.5rem 0}
+.result p{color:var(--text2);font-size:14px;margin-bottom:1.5rem}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.rstat{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:12px 8px;text-align:center}
+.rstat-val{font-size:1.4rem;font-weight:700;color:var(--text);display:block}
+.rstat-lbl{font-size:11px;color:var(--text3)}
+.replay-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:13px;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s}
+.replay-btn:hover{opacity:.88}
+
+/* ── Review ── */
+.review-item{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;text-align:left}
+.review-q{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.review-answer{font-size:13px;display:flex;align-items:center;gap:6px}
+.review-answer.ok{color:#A5D6A7}
+.review-answer.ko{color:#EF9A9A}
+
+@media(max-width:480px){.res-grid{grid-template-columns:1fr}.vf-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ACCUEIL -->
+<div id="home">
+  <div class="home">
+    <div class="home-logo">📍</div>
+    <h1>Localisation &amp; Vie privée</h1>
+    <p class="subtitle">SNT · Chapitre Localisation, cartographie et mobilité</p>
+    <p class="source">10 questions · <strong>4 situations à analyser</strong> + <strong>6 vrai/faux</strong><br>
+    GPS, métadonnées EXIF, historique de position, confidentialité</p>
+    <button class="start-btn" onclick="start()">Lancer le quiz →</button>
+  </div>
+</div>
+
+<!-- JEU -->
+<div id="game" class="hidden">
+  <div class="top-bar">
+    <span class="q-label" id="qlabel">1 / 10</span>
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <span class="score-badge">⭐ <span id="sdisp">0</span></span>
+  </div>
+  <div class="q-card" id="qcard">
+    <div class="q-num" id="qnum"></div>
+    <div id="qtype-badge"></div>
+    <div class="q-text" id="qtext"></div>
+  </div>
+  <div id="answers-area"></div>
+  <div id="fb" class="hidden"></div>
+  <button class="next-btn hidden" id="next-btn" onclick="nextQ()">Question suivante →</button>
+</div>
+
+<!-- RÉSULTAT -->
+<div id="result" class="hidden result"></div>
+
+</div>
+
+<script>
+const QS = [
+  /* ── SITUATIONS ──────────────────────────────────────────── */
+  {
+    type: 'abc',
+    num: 'Situation 1',
+    text: '🏖️ Léa prend une photo de ses vacances et la publie directement depuis son téléphone sur Instagram, sans modifier les paramètres.',
+    opts: [
+      'Aucun problème : Instagram supprime automatiquement toutes les données GPS.',
+      'Risque limité : Instagram supprime les données EXIF, mais le lieu peut se deviner depuis l\'arrière-plan de la photo.',
+      'Risque important : les coordonnées GPS exactes sont visibles par tous les abonnés.'
+    ],
+    ok: 1,
+    expl: 'Instagram supprime effectivement les métadonnées EXIF (dont les coordonnées GPS) avant de publier la photo — personne ne peut donc lire les données GPS brutes. Cependant, l\'arrière-plan de la photo (monument, panneau, paysage) peut trahir la localisation. Le risque est donc réel mais indirect.'
+  },
+  {
+    type: 'abc',
+    num: 'Situation 2',
+    text: '📱 Tom envoie une photo par Telegram à un ami. La photo a été prise avec son téléphone et le GPS était activé.',
+    opts: [
+      'Aucun risque : Telegram chiffre les fichiers et supprime les métadonnées.',
+      'Risque réel : Telegram ne supprime pas les données EXIF par défaut. L\'ami reçoit la photo avec les coordonnées GPS intactes.',
+      'Risque nul si la photo est envoyée en "mode secret".'
+    ],
+    ok: 1,
+    expl: 'Contrairement à WhatsApp qui supprime les métadonnées EXIF, Telegram envoie par défaut les fichiers tels quels — coordonnées GPS incluses. Le destinataire peut donc extraire les coordonnées exactes de la prise de vue avec un outil comme Jeffrey\'s Exif Viewer. Le mode secret chiffre la communication mais ne supprime pas les EXIF.'
+  },
+  {
+    type: 'abc',
+    num: 'Situation 3',
+    text: '📵 Sur son téléphone Android, Samir désactive le GPS dans les paramètres rapides. Il pense que plus aucune appli ne peut le localiser.',
+    opts: [
+      'Correct : sans GPS, aucune localisation n\'est possible.',
+      'Partiellement vrai : le GPS est coupé mais une localisation approximative reste possible via le Wi-Fi et les antennes mobiles.',
+      'Faux : couper le GPS n\'a aucun effet sur la localisation.'
+    ],
+    ok: 1,
+    expl: 'Couper le GPS désactive la localisation par satellite (précision ~5 m), mais le téléphone peut encore être localisé par triangulation des antennes mobiles (GSM/4G, précision ~100-500 m) ou par les réseaux Wi-Fi environnants (précision ~10-50 m). Ces méthodes fonctionnent sans GPS actif.'
+  },
+  {
+    type: 'abc',
+    num: 'Situation 4',
+    text: '🗑️ Nina supprime l\'application Google Maps de son téléphone. Elle pense avoir effacé son historique de positions.',
+    opts: [
+      'Correct : supprimer l\'appli supprime toutes les données associées.',
+      'Faux : l\'historique est stocké sur les serveurs Google. Il faut le supprimer depuis myactivity.google.com.',
+      'Faux : l\'historique est chiffré et impossible à supprimer.'
+    ],
+    ok: 1,
+    expl: 'L\'historique de localisation Google n\'est pas stocké sur le téléphone mais sur les serveurs de Google. Supprimer l\'application n\'efface rien côté serveur. Pour supprimer cet historique, il faut se connecter à myactivity.google.com (ou Google Maps > Chronologie) et choisir de supprimer les données de localisation.'
+  },
+
+  /* ── VRAI / FAUX ─────────────────────────────────────────── */
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '✈️ Activer le mode avion coupe totalement toute possibilité de me localiser.',
+    ok: false,
+    expl: 'FAUX. Le mode avion coupe le GPS, le Wi-Fi et les données mobiles, ce qui empêche toute localisation en temps réel. Cependant, certaines applications enregistrent les déplacements localement et les synchronisent dès que la connexion est rétablie. De plus, des acteurs tiers (opérateurs) peuvent conserver des données de localisation passées.'
+  },
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '📡 Un opérateur téléphonique peut toujours connaître ma position approximative, même sans GPS.',
+    ok: true,
+    expl: 'VRAI. Les opérateurs mobiles peuvent trianguler la position d\'un téléphone à partir des antennes-relais auxquelles il se connecte, même si le GPS est désactivé. Cette localisation est approximative (de quelques centaines de mètres à quelques kilomètres selon la densité des antennes). Elle est utilisée pour des raisons légales (enquêtes judiciaires) ou pour améliorer le réseau.'
+  },
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '📷 Supprimer une photo de son téléphone efface définitivement ses métadonnées GPS.',
+    ok: false,
+    expl: 'FAUX. Supprimer une photo supprime le fichier du téléphone, mais si la photo a été envoyée (par mail, Telegram, MMS…) avant la suppression, les métadonnées GPS sont déjà dans le fichier reçu par le destinataire. De plus, des sauvegardes dans le cloud (Google Photos, iCloud) peuvent conserver la photo avec ses métadonnées.'
+  },
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '⚖️ Google peut partager ton historique de localisation avec des tiers dans certains cas légaux.',
+    ok: true,
+    expl: 'VRAI. En cas de demande légale (réquisition judiciaire, injonction de tribunal), Google est tenu de transmettre les données de localisation aux autorités compétentes. Ces données peuvent être utilisées dans le cadre d\'enquêtes pénales. C\'est une des raisons pour lesquelles il est important de comprendre quelles données on génère et comment les gérer.'
+  },
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '🔒 Utiliser un VPN empêche toute géolocalisation de son téléphone.',
+    ok: false,
+    expl: 'FAUX. Un VPN masque l\'adresse IP et chiffre les communications internet, ce qui rend la géolocalisation par IP inefficace. Mais il n\'empêche pas la localisation par GPS (toujours actif), par Wi-Fi ou par antennes mobiles. Les applications qui ont la permission d\'accéder au GPS continuent de te localiser précisément, VPN ou pas.'
+  },
+  {
+    type: 'vf',
+    num: 'Vrai ou Faux ?',
+    text: '⚙️ Il est possible de désactiver l\'historique de localisation Google depuis les paramètres de son compte.',
+    ok: true,
+    expl: 'VRAI. Depuis myaccount.google.com > Données et confidentialité > Historique des positions, il est possible de désactiver la collecte de l\'historique de localisation, de supprimer tout ou partie de l\'historique existant, et de définir une suppression automatique après 3, 18 ou 36 mois. C\'est une bonne pratique pour limiter la collecte de données personnelles.'
+  }
+];
+
+let idx=0, score=0, ok=0, ko=0, answered=false, userAnswers=[];
+
+function start(){
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  loadQ();
+}
+
+function loadQ(){
+  answered=false;
+  const q=QS[idx];
+  const total=QS.length;
+  document.getElementById('qlabel').textContent=`${idx+1} / ${total}`;
+  document.getElementById('prog').style.width=`${(idx/total)*100}%`;
+  document.getElementById('qnum').textContent=q.num;
+
+  // Badge type
+  const badgeEl = document.getElementById('qtype-badge');
+  if(q.type==='abc'){
+    badgeEl.innerHTML='<span class="q-type-badge badge-situation">🔍 Situation à analyser</span>';
+  } else {
+    badgeEl.innerHTML='<span class="q-type-badge badge-vf">⚡ Vrai / Faux</span>';
+  }
+
+  document.getElementById('qtext').textContent=q.text;
+  document.getElementById('fb').className='hidden';
+  document.getElementById('fb').innerHTML='';
+  document.getElementById('next-btn').classList.add('hidden');
+  if(idx+1===QS.length) document.getElementById('next-btn').textContent='Voir les résultats →';
+  else document.getElementById('next-btn').textContent='Question suivante →';
+
+  const area = document.getElementById('answers-area');
+
+  if(q.type==='abc'){
+    const letters=['A','B','C'];
+    const colors=['ans-a','ans-b','ans-c'];
+    area.innerHTML='<div class="answers">'+q.opts.map((o,i)=>
+      `<button class="ans-btn ${colors[i]}" onclick="answer(${i},this)">
+        <span class="ans-letter">${letters[i]}</span>
+        <span class="ans-text">${o}</span>
+      </button>`
+    ).join('')+'</div>';
+  } else {
+    area.innerHTML=`<div class="vf-row">
+      <button class="vf-btn vf-vrai" onclick="answerVF(true,this)">✓ VRAI</button>
+      <button class="vf-btn vf-faux" onclick="answerVF(false,this)">✗ FAUX</button>
+    </div>`;
+  }
+}
+
+function answer(i, el){
+  if(answered) return;
+  answered=true;
+  const q=QS[idx];
+  const isOk=(i===q.ok);
+  document.querySelectorAll('.ans-btn').forEach(b=>b.disabled=true);
+  if(isOk){
+    el.classList.add('correct');
+    document.querySelectorAll('.ans-btn').forEach((b,j)=>{if(j!==i) b.classList.add('wrong')});
+    score+=100; ok++;
+    showFb('ok','✅','Correct !',q.expl);
+  } else {
+    el.classList.add('wrong');
+    const correctEl=document.querySelectorAll('.ans-btn')[q.ok];
+    correctEl.classList.add('correct');
+    document.querySelectorAll('.ans-btn').forEach((b,j)=>{if(j!==q.ok&&j!==i) b.classList.add('wrong')});
+    ko++;
+    showFb('ko','❌','Raté ! La bonne réponse était : '+q.opts[q.ok],q.expl);
+  }
+  userAnswers.push({q:q.text, chose:q.opts[i], correct:q.opts[q.ok], ok:isOk});
+  document.getElementById('sdisp').textContent=score;
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function answerVF(chosen, el){
+  if(answered) return;
+  answered=true;
+  const q=QS[idx];
+  const isOk=(chosen===q.ok);
+  document.querySelectorAll('.vf-btn').forEach(b=>b.disabled=true);
+  if(isOk){
+    el.classList.add('correct');
+    document.querySelectorAll('.vf-btn').forEach(b=>{if(b!==el) b.classList.add('wrong')});
+    score+=100; ok++;
+    showFb('ok','✅','Correct !',q.expl);
+  } else {
+    el.classList.add('wrong');
+    document.querySelectorAll('.vf-btn').forEach(b=>{if(b!==el) b.classList.add('correct')});
+    ko++;
+    const correctLabel = q.ok ? 'VRAI' : 'FAUX';
+    showFb('ko','❌','Raté ! La bonne réponse était : '+correctLabel,q.expl);
+  }
+  const chosenLabel = chosen ? 'VRAI' : 'FAUX';
+  const correctLabel = q.ok ? 'VRAI' : 'FAUX';
+  userAnswers.push({q:q.text, chose:chosenLabel, correct:correctLabel, ok:isOk});
+  document.getElementById('sdisp').textContent=score;
+  document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function showFb(type,icon,title,detail){
+  const el=document.getElementById('fb');
+  el.className=`feedback ${type}`;
+  el.innerHTML=`<span class="fb-icon">${icon}</span><div><strong>${title}</strong><br><span style="font-size:12px">${detail}</span></div>`;
+}
+
+function nextQ(){
+  idx++;
+  if(idx>=QS.length){endGame();return;}
+  loadQ();
+}
+
+function endGame(){
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('prog').style.width='100%';
+  const pct=ok/QS.length;
+  const medal=pct===1?'🥇':pct>=.8?'🥈':pct>=.6?'🥉':'📚';
+  const title=pct===1?'Score parfait !':pct>=.8?'Excellent !':pct>=.6?'Bien joué !':'À retravailler !';
+  const msg=pct===1?'Tu maîtrises parfaitement les enjeux de localisation et de vie privée.':
+            pct>=.6?'Tu as de bonnes connaissances sur la géolocalisation et la confidentialité.':
+            'Relis le cours sur la localisation et les données personnelles et recommence !';
+  const r=document.getElementById('result');
+  r.classList.remove('hidden');
+  r.innerHTML=`
+<span class="res-medal">${medal}</span>
+<h2>${title}</h2>
+<div class="res-score">${score} pts</div>
+<p>${msg}</p>
+<div class="res-grid">
+  <div class="rstat"><span class="rstat-val">${ok}/${QS.length}</span><span class="rstat-lbl">Bonnes réponses</span></div>
+  <div class="rstat"><span class="rstat-val">${ko}</span><span class="rstat-lbl">Erreurs</span></div>
+  <div class="rstat"><span class="rstat-val">${Math.round(pct*100)} %</span><span class="rstat-lbl">Score</span></div>
+</div>
+<div style="text-align:left;margin-bottom:1.5rem">
+  <p style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:.75rem">Récapitulatif</p>
+  ${userAnswers.map(a=>`
+  <div class="review-item">
+    <div class="review-q">${a.q}</div>
+    <div class="review-answer ${a.ok?'ok':'ko'}">${a.ok?'✓':'✗'} ${a.chose}${!a.ok?' → Bonne réponse : '+a.correct:''}</div>
+  </div>`).join('')}
+</div>
+<div style="background:#1B5E2033;border:1px solid #2E7D32;border-radius:var(--radius);padding:12px 16px;margin-bottom:1.5rem;text-align:left">
+  <p style="font-size:12px;font-weight:600;color:#A5D6A7;margin-bottom:4px">💡 Pour aller plus loin</p>
+  <p style="font-size:12px;color:#A5D6A7;line-height:1.6"><strong>myactivity.google.com</strong> — Gérer et supprimer ton historique Google<br>
+  <strong>exifinfo.org</strong> — Consulter les métadonnées EXIF de tes photos<br>
+  <strong>cnil.fr</strong> — Droits sur tes données personnelles</p>
+</div>
+<button class="replay-btn" onclick="replay()">↺ Rejouer</button>`;
+}
+
+function replay(){
+  idx=0;score=0;ok=0;ko=0;answered=false;userAnswers=[];
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  document.getElementById('sdisp').textContent=0;
+  document.getElementById('prog').style.width='0%';
+  loadQ();
+}
+</script>
+</body>
+</html>
