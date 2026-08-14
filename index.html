@@ -339,9 +339,9 @@
 
 <nav class="tabs" aria-label="Choisir une classe">
   <div class="tabs-scroll" role="tablist">
-    <div class="tab active" role="tab" id="tab-cap" aria-controls="panel-cap" aria-selected="true" tabindex="0" data-panel="cap">Seconde SNT</div>
+    <div class="tab active" role="tab" id="tab-snt" aria-controls="panel-snt" aria-selected="true" tabindex="0" data-panel="cap">Seconde SNT</div>
     <div class="tab" role="tab" id="tab-premiere" aria-controls="panel-premiere" aria-selected="false" tabindex="-1" data-panel="premiere">Première STI2D</div>
-    <div class="tab" role="tab" id="tab-terminale" aria-controls="panel-terminale" aria-selected="false" tabindex="-1" data-panel="terminale">Option SI-CIT</div>
+    <div class="tab" role="tab" id="tab-option" aria-controls="panel-option" aria-selected="false" tabindex="-1" data-panel="terminale">Option SI-CIT</div>
     <div class="tab" role="tab" id="tab-bonus" aria-controls="panel-bonus" aria-selected="false" tabindex="-1" data-panel="bonus">Bonus</div>
   </div>
 </nav>
@@ -349,50 +349,54 @@
 <main>
 
   <!-- ================= Seconde SNT ================= -->
-  <section class="panel active" id="panel-cap" role="tabpanel" aria-labelledby="tab-cap">
+  <section class="panel active" id="panel-snt" role="tabpanel" aria-labelledby="tab-snt">
 
     <div class="chapter-grid">
-      <div class="chapter-card" data-target="cap-automatismes" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Automatismes</h2>
+      <div class="chapter-card" data-target="snt-reseauxsociaux" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
+        <h2>Réseaux sociaux</h2>
         <span class="count">1 activité</span>
       </div>
-      <div class="chapter-card" data-target="cap-proportionnalite" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Révisions proportionnalité</h2>
+      <div class="chapter-card" data-target="snt-python" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
+        <h2>Programmation Python</h2>
         <span class="count">3 activités</span>
       </div>
-      <div class="chapter-card" data-target="cap-fonction-affine" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Fonction affine</h2>
+      <div class="chapter-card" data-target="snt-localisation" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
+        <h2>Localisation, cartographie, mobilité</h2>
+        <span class="count">1 activité</span>
+      </div>
+      <div class="chapter-card" data-target="snt-binaire" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
+        <h2>Codage numérique et binaire</h2>
         <span class="count">1 activité</span>
       </div>
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Systèmes d'équations à deux inconnues</h2>
+          <h2>Internet</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Pythagore</h2>
+          <h2>Web</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Thalès</h2>
+          <h2>Photographie numérique</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Trigonométrie</h2>
+          <h2>Informatique embarquée</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
     </div>
 
-    <div class="chapter-detail" id="detail-cap-automatismes">
+    <div class="chapter-detail" id="detail-snt-reseauxsociaux">
       <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Automatismes</p>
+      <p class="detail-title">Réseaux sociaux</p>
       <div class="grid">
         <a class="card" href="jeux/qcm-automatismes-cap-2a.html">
           <span class="badge qcm">QCM</span>
@@ -403,9 +407,9 @@
       </div>
     </div>
 
-    <div class="chapter-detail" id="detail-cap-proportionnalite">
+    <div class="chapter-detail" id="detail-snt-python">
       <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Révisions proportionnalité</p>
+      <p class="detail-title">Programmation Python</p>
       <div class="grid">
         <a class="card" href="jeux/cap-proportionnalite.html">
           <span class="badge jeu">Jeu</span>
@@ -428,9 +432,9 @@
       </div>
     </div>
 
-    <div class="chapter-detail" id="detail-cap-fonction-affine">
+    <div class="chapter-detail" id="detail-snt-localisation">
       <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Fonction affine</p>
+      <p class="detail-title">Localisation, cartographie, mobilité</p>
       <div class="grid">
         <a class="card" href="jeux/premiere-fonctions-affines.html">
           <span class="badge jeu">Jeu</span>
@@ -440,65 +444,38 @@
         </a>
       </div>
     </div>
-
+    <div class="chapter-detail" id="detail-snt-binaire">
+      <button class="back-btn">← Retour aux chapitres</button>
+      <p class="detail-title">Codage numérique et binaire</p>
+      <div class="grid">
+        <a class="card" href="jeux/qcm-automatismes-cap-2a.html">
+          <span class="badge qcm">QCM</span>
+          <h3>QCM d'automatismes</h3>
+          <p>Entraînement classé par thème, avec suivi du score sur chaque QCM.</p>
+          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
+        </a>
+      </div>
+    </div>
   </section>
 
-  <!-- ================= Première Pro ================= -->
+  <!-- ================= Première STI2D ================= -->
   <section class="panel" id="panel-premiere" role="tabpanel" aria-labelledby="tab-premiere">
 
     <div class="chapter-grid">
-      <div class="chapter-card" data-target="premiere-automatismes" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Automatismes</h2>
-        <span class="count">1 activité</span>
-      </div>
-      <div class="chapter-card" data-target="premiere-fonctions-affines" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Révisions sur les fonctions affines</h2>
-        <span class="count">1 activité</span>
-      </div>
-      <div class="chapter-card" data-target="premiere-stats" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Statistiques à deux variables</h2>
-        <span class="count">1 activité</span>
-      </div>
-      <div class="chapter-card" data-target="premiere-suites" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Suites numériques et arithmétiques</h2>
-        <span class="count">1 activité</span>
-      </div>
+
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Calculs commerciaux et financiers</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card" data-target="premiere-probabilites" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Probabilité</h2>
-        <span class="count">2 activités</span>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Suites - sommes</h2>
+          <h2>Champ Énergie</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
       <div class="chapter-card disabled" aria-disabled="true">
         <div>
-          <h2>Résolution graphique d'équations et d'inéquations - Fonction polynôme de degré 2</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Nombre et fonction dérivée</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Géométrie dans l'espace</h2>
+          <h2>Champ Information</h2>
           <span class="chapter-soon">À venir</span>
         </div>
       </div>
     </div>
-
     <div class="chapter-detail" id="detail-premiere-automatismes">
       <button class="back-btn">← Retour aux chapitres</button>
       <p class="detail-title">Automatismes</p>
@@ -512,214 +489,16 @@
       </div>
     </div>
 
-    <div class="chapter-detail" id="detail-premiere-stats">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Statistiques à deux variables</p>
-      <div class="grid">
-        <a class="card" href="jeux/qcm-revision-statistiques.html">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM de révision — Statistiques</h3>
-          <p>Ajustement affine, coefficient de détermination R², corrélation et extrapolation.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/fiche-memo-statistiques.html">
-          <span class="badge memo">Mémo</span>
-          <h3>Fiche mémo — Statistique à deux variables</h3>
-          <p>Ajustement affine, R², interpoler ou extrapoler : l'essentiel avant un QCM.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-premiere-suites">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Suites numériques et arithmétiques</p>
-      <div class="grid">
-        <a class="card" href="jeux/premiere-suites-arithmetiques.html">
-          <span class="badge jeu">Jeu</span>
-          <h3>Suites arithmétiques</h3>
-          <p>Entraîne-toi sur les suites arithmétiques.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/qcm-suites-arithmetiques.html">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM — Suites arithmétiques</h3>
-          <p>10 questions pour vérifier les notions du chapitre.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/fiche-memo-suites-arithmetiques.html">
-          <span class="badge memo">Mémo</span>
-          <h3>Fiche mémo — Suites arithmétiques</h3>
-          <p>L'essentiel à relire juste avant un exercice ou une évaluation.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-premiere-probabilites">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Probabilité</p>
-      <div class="grid">
-        <a class="card" href="jeux/qcm-probabilites.html">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM — Probabilités</h3>
-          <p>10 questions sur le vocabulaire, l'équiprobabilité, les évènements contraires, l'intersection, la réunion et les probabilités conditionnelles.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/fiche-memo-probabilites.html">
-          <span class="badge memo">Mémo</span>
-          <h3>Fiche mémo — Probabilités</h3>
-          <p>L'essentiel à relire juste avant un exercice ou une évaluation.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-premiere-fonctions-affines">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Révisions sur les fonctions affines</p>
-      <div class="grid">
-        <a class="card" href="jeux/premiere-fonctions-affines.html">
-          <span class="badge jeu">Jeu</span>
-          <h3>Trouve le trio — fonctions affines</h3>
-          <p>Associe expression, tableau de valeurs et représentation graphique.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/qcm-fonctions-affines.html">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM — Fonctions affines</h3>
-          <p>10 questions sur le coefficient directeur, le sens de variation et la représentation graphique.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/fiche-memo-fonctions-affines.html">
-          <span class="badge memo">Mémo</span>
-          <h3>Fiche mémo — Fonctions affines</h3>
-          <p>L'essentiel à relire juste avant un exercice ou une évaluation.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
-
   </section>
 
-  <!-- ================= Terminale Pro ================= -->
-  <section class="panel" id="panel-terminale" role="tabpanel" aria-labelledby="tab-terminale">
-
-    <div class="chapter-grid">
-      <div class="chapter-card" data-target="terminale-automatismes" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Automatismes</h2>
-        <span class="count">1 activité</span>
-      </div>
-      <div class="chapter-card" data-target="terminale-suites" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Suites numériques et géométriques</h2>
-        <span class="count">1 activité</span>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Probabilités</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Calculs financiers</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Statistique à deux variables</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Fonctions polynôme de degré 2</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Fonctions polynôme de degré 3</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Fonctions exponentielles de base q</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-      <div class="chapter-card disabled" aria-disabled="true">
-        <div>
-          <h2>Fonction logarithme décimal</h2>
-          <span class="chapter-soon">À venir</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-terminale-automatismes">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Automatismes</p>
-      <div class="grid">
-        <div class="card disabled">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM d'automatismes</h3>
-          <p>Entraînement rapide, correction immédiate.</p>
-          <div class="meta"><span><span class="status-dot soon"></span>Bientôt</span><span>—</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-terminale-suites">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Suites numériques et géométriques</p>
-      <div class="grid">
-        <a class="card" href="jeux/terminale-suites.html">
-          <span class="badge jeu">Jeu</span>
-          <h3>Suites arithmétiques et géométriques</h3>
-          <p>Entraîne-toi sur les deux types de suites.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/qcm-suites-geometriques.html">
-          <span class="badge qcm">QCM</span>
-          <h3>QCM — Suites géométriques</h3>
-          <p>10 questions pour t'entraîner avant l'interro.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-        <a class="card" href="jeux/fiche-memo-suites-geometriques.html">
-          <span class="badge memo">Mémo</span>
-          <h3>Fiche mémo — Suites géométriques</h3>
-          <p>L'essentiel à relire juste avant un QCM ou un jeu.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
+  <!-- ================= Option SI-CIT ================= -->
+  <section class="panel" id="panel-option" role="tabpanel" aria-labelledby="tab-option">
 
   </section>
 
   <!-- ================= Bonus ================= -->
   <section class="panel" id="panel-bonus" role="tabpanel" aria-labelledby="tab-bonus">
 
-    <div class="chapter-grid">
-      <div class="chapter-card" data-target="bonus-securite" role="button" tabindex="0" aria-label="Ouvrir le chapitre">
-        <h2>Sécurité en physique-chimie</h2>
-        <span class="count">1 activité</span>
-      </div>
-    </div>
-
-    <div class="chapter-detail" id="detail-bonus-securite">
-      <button class="back-btn">← Retour aux chapitres</button>
-      <p class="detail-title">Sécurité en physique-chimie</p>
-      <div class="grid">
-        <a class="card" href="jeux/securite-laboratoire.html">
-          <span class="badge jeu">Jeu</span>
-          <h3>Jeu des trios — sécurité labo</h3>
-          <p>Associe risque, conséquence et prévention. Électricité, chimie, acoustique, optique.</p>
-          <div class="meta"><span><span class="status-dot available"></span>Disponible</span><span>—</span></div>
-        </a>
-      </div>
-    </div>
 
   </section>
 
