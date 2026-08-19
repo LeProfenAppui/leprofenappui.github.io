@@ -32,4 +32,20 @@
     <loc>https://leprofenappui.github.io/jeu/snt_binaire_escapegame.html</loc>
     <priority>0.8</priority>
   </url>
+    <url>
+    <loc>https://leprofenappui.github.io/jeu/chapitre1_qcmA_affichage_texte.html</loc>
+    <priority>0.8</priority>
+  </url>
+    <url>
+    <loc>https://leprofenappui.github.io/jeu/chapitre1_qcmB_affichage_texte.html</loc>
+    <priority>0.8</priority>
+  </url>
+    <url>
+    <loc>https://leprofenappui.github.io/jeu/chapitre2_qcmA_repetitions.html</loc>
+    <priority>0.8</priority>
+  </url>
+    <url>
+    <loc>https://leprofenappui.github.io/jeu/chapitre2_qcmB_repetitions.html</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
