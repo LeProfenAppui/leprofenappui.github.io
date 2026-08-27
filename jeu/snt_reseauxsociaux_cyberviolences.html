@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberviolences — Jeu d'association · SNT</title>
+<style>
+:root{
+  --bg:#F4F5FA;--surface:#FFF;--surface2:#F0F2F8;--surface3:#E4E8F5;
+  --border:#DDE1F0;--border2:#C4CAD9;
+  --text:#1A1D30;--text2:#4A5080;--text3:#8A91B8;
+  --accent:#3B6FF0;--accent-bg:#EBF0FE;--accent-text:#1A3A8F;
+  --success:#1A8A3A;--success-bg:#E8F8ED;--success-border:#A8DFB8;
+  --danger:#D93025;--danger-bg:#FEF0EE;--danger-border:#F5C2BE;
+  --warn:#B06000;--warn-bg:#FFF4E0;
+  --radius:10px;
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.5;color:var(--text);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem}
+.wrap{width:100%;max-width:720px}
+
+/* ── Header ── */
+.top{text-align:center;margin-bottom:1.5rem}
+.top h1{font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:.3rem;letter-spacing:-.02em}
+.top p{font-size:13px;color:var(--text2);max-width:480px;margin:0 auto}
+.badge-snt{display:inline-block;background:var(--accent-bg);color:var(--accent-text);border:1px solid #B0C0F8;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 12px;margin-bottom:.75rem}
+
+/* ── Stats ── */
+.stats{display:flex;gap:10px;justify-content:center;margin-bottom:1.25rem;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 18px;text-align:center;min-width:110px}
+.stat-val{font-size:22px;font-weight:600;color:var(--text);display:block}
+.stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── Progression ── */
+.prog-wrap{margin-bottom:1rem}
+.prog-track{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px}
+
+/* ── Page indicator ── */
+.page-dots{display:flex;gap:5px;justify-content:center;margin-bottom:1rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .2s}
+.dot.active{background:var(--accent);transform:scale(1.2)}
+.dot.done{background:var(--success)}
+
+/* ── Feedback ── */
+.feedback{height:28px;text-align:center;font-size:13px;font-weight:500;margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.feedback.ok{color:var(--success)}
+.feedback.ko{color:var(--danger)}
+
+/* ── Colonnes ── */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1rem}
+.col-lbl{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;padding-left:2px}
+.terms,.defs{display:flex;flex-direction:column;gap:7px}
+
+/* ── Cartes ── */
+.term,.def{border:1.5px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:10px 13px;cursor:pointer;font-size:13px;line-height:1.5;color:var(--text);transition:all .18s;min-height:46px;display:flex;align-items:center;-webkit-user-select:none;user-select:none}
+.term{font-weight:500;justify-content:center;text-align:center}
+.def{text-align:left}
+.term:hover:not(.done):not(.wrong),.def:hover:not(.done):not(.wrong){border-color:var(--accent);background:var(--accent-bg);color:var(--accent-text)}
+.term.selected,.def.selected{border-color:var(--accent);background:var(--accent-bg);color:var(--accent-text);border-width:2px}
+.term.done,.def.done{border-color:var(--success-border);background:var(--success-bg);color:var(--success);cursor:default;border-width:1.5px}
+.term.wrong,.def.wrong{border-color:var(--danger-border);background:var(--danger-bg);color:var(--danger);animation:shake .28s ease}
+
+/* ── Résultat ── */
+.result{text-align:center;padding:2.5rem 1rem;display:none}
+.result.show{display:block}
+.medal{font-size:5rem;display:block;margin-bottom:.75rem}
+.result h2{font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.result p{color:var(--text2);font-size:14px;margin-bottom:1.5rem}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.rstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 8px;text-align:center}
+.rstat-val{font-size:1.4rem;font-weight:600;color:var(--text);display:block}
+.rstat-lbl{font-size:11px;color:var(--text3)}
+.replay-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.replay-btn:hover{opacity:.88}
+
+/* ── Boutons ── */
+.top-actions{display:flex;gap:8px;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}
+.btn{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop .22s ease both}
+
+@media(max-width:480px){
+  .cols{grid-template-columns:1fr}
+  .result-grid{grid-template-columns:1fr}
+  .stats{gap:6px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top">
+  <div class="badge-snt">SNT — Cyberviolences</div>
+  <h1>Jeu d'association</h1>
+  <p>Relie chaque terme à sa définition en cliquant sur un mot à gauche puis sur la bonne définition à droite. 5 associations à la fois.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><span class="stat-val" id="sc-found">0</span><span class="stat-lbl">Trouvés</span></div>
+  <div class="stat"><span class="stat-val" id="sc-total">0</span><span class="stat-lbl">Total</span></div>
+  <div class="stat"><span class="stat-val" id="sc-errors">0</span><span class="stat-lbl">Erreurs</span></div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-label"><span id="pg-left">Progression</span><span id="pg-right">0 %</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+</div>
+
+<div class="page-dots" id="page-dots"></div>
+
+<div class="top-actions">
+  <button class="btn" onclick="reset()">↺ Recommencer</button>
+</div>
+
+<div class="feedback" id="fb"></div>
+
+<div id="main-game">
+  <div class="cols">
+    <div><div class="col-lbl">Terme</div><div class="terms" id="terms-col"></div></div>
+    <div><div class="col-lbl">Définition</div><div class="defs" id="defs-col"></div></div>
+  </div>
+</div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+const ALL_PAIRS = [
+  {
+    term:"Flaming",
+    def:"Envoi massif de messages insultants et menaçants à une personne en ligne."
+  },
+  {
+    term:"Exclusion",
+    def:"Isoler ou exclure délibérément une personne d'un groupe social en ligne."
+  },
+  {
+    term:"Usurpation d'identité",
+    def:"Voler l'identité d'une personne sur les réseaux ou ouvrir un profil avec ses données personnelles sans son accord."
+  },
+  {
+    term:"Slut shaming",
+    def:"Blâmer ou déconsidérer une personne (souvent une fille) dont la tenue, le maquillage ou les comportements ne correspondent pas aux normes du groupe."
+  },
+  {
+    term:"Outing",
+    def:"Divulguer des informations intimes sans consentement, comme révéler l'homosexualité d'une personne à son insu."
+  },
+  {
+    term:"Happy slapping",
+    def:"Filmer une scène de violence avec un portable, puis diffuser ou partager la vidéo sur internet."
+  },
+  {
+    term:"Revenge porn",
+    def:"Divulguer des images ou vidéos à caractère sexuel dans le but de se venger d'une personne."
+  },
+  {
+    term:"Phishing",
+    def:"Inciter une personne à communiquer des données personnelles ou bancaires en se faisant passer pour un tiers de confiance."
+  },
+  {
+    term:"Sextorsion",
+    def:"Menacer de diffuser des photos ou vidéos intimes pour contraindre une personne à se livrer à des actes sexuels en ligne."
+  },
+  {
+    term:"Deepfake",
+    def:"Contenu numérique (audio, vidéo, photo) faux mais rendu hyperréaliste grâce à l'intelligence artificielle, utilisé pour le chantage ou la diffamation."
+  },
+];
+
+const PAGE_SIZE = 5;
+let allPairs=[], page=0, found=0, errors=0, selTermEl=null, selDefEl=null, pageCount=0;
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5) }
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+function reset(){
+  allPairs = shuffle(ALL_PAIRS.map((p,i)=>({...p, id:i})));
+  pageCount = Math.ceil(allPairs.length / PAGE_SIZE);
+  page=0; found=0; errors=0; selTermEl=null; selDefEl=null;
+  document.getElementById('sc-found').textContent=0;
+  document.getElementById('sc-errors').textContent=0;
+  document.getElementById('sc-total').textContent=allPairs.length;
+  document.getElementById('prog').style.width='0%';
+  document.getElementById('pg-right').textContent='0 %';
+  document.getElementById('result').className='result';
+  document.getElementById('result').innerHTML='';
+  document.getElementById('main-game').style.display='block';
+  buildDots();
+  loadPage();
+}
+
+function buildDots(){
+  const el=document.getElementById('page-dots');
+  el.innerHTML=Array.from({length:pageCount},(_,i)=>`<div class="dot" id="dot-${i}"></div>`).join('');
+  updateDots();
+}
+
+function updateDots(){
+  for(let i=0;i<pageCount;i++){
+    const d=document.getElementById('dot-'+i);
+    d.className='dot'+(i<page?' done':i===page?' active':'');
+  }
+}
+
+function currentPairs(){ return allPairs.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE) }
+
+function loadPage(){
+  updateDots();
+  selTermEl=null; selDefEl=null;
+  const pairs=currentPairs();
+  const terms=shuffle(pairs.map(p=>({id:p.id, text:p.term})));
+  const defs=shuffle(pairs.map(p=>({id:p.id, text:p.def})));
+  document.getElementById('terms-col').innerHTML=terms.map((t,i)=>
+    `<div class="term pop" data-id="${t.id}" onclick="clickTerm(this)" style="animation-delay:${i*.05}s">${escHtml(t.text)}</div>`
+  ).join('');
+  document.getElementById('defs-col').innerHTML=defs.map((d,i)=>
+    `<div class="def pop" data-id="${d.id}" onclick="clickDef(this)" style="animation-delay:${i*.05}s">${escHtml(d.text)}</div>`
+  ).join('');
+  fb('','');
+}
+
+function clickTerm(el){
+  if(el.classList.contains('done')||el.classList.contains('wrong')) return;
+  document.querySelectorAll('.term.selected').forEach(e=>e.classList.remove('selected'));
+  selTermEl=el; el.classList.add('selected');
+  if(selDefEl) check();
+}
+function clickDef(el){
+  if(el.classList.contains('done')||el.classList.contains('wrong')) return;
+  document.querySelectorAll('.def.selected').forEach(e=>e.classList.remove('selected'));
+  selDefEl=el; el.classList.add('selected');
+  if(selTermEl) check();
+}
+
+function check(){
+  const tEl=selTermEl, dEl=selDefEl;
+  selTermEl=null; selDefEl=null;
+  const isMatch = tEl.dataset.id === dEl.dataset.id;
+
+  if(isMatch){
+    tEl.classList.remove('selected'); tEl.classList.add('done');
+    dEl.classList.remove('selected'); dEl.classList.add('done');
+    found++;
+    document.getElementById('sc-found').textContent=found;
+    const pct=Math.round(found/allPairs.length*100);
+    document.getElementById('prog').style.width=pct+'%';
+    document.getElementById('pg-right').textContent=pct+' %';
+    fb('ok','✓ Bonne association !');
+    const pageDone=document.querySelectorAll('#terms-col .term:not(.done)').length===0;
+    if(pageDone){
+      const hasNext=(page+1)*PAGE_SIZE<allPairs.length;
+      if(hasNext){ setTimeout(()=>{page++;loadPage();},700); }
+      else { setTimeout(showResult,800); }
+    }
+  } else {
+    errors++;
+    document.getElementById('sc-errors').textContent=errors;
+    tEl.classList.remove('selected'); tEl.classList.add('wrong');
+    dEl.classList.remove('selected'); dEl.classList.add('wrong');
+    fb('ko','✗ Ce n\'est pas la bonne association. Réessaie !');
+    setTimeout(()=>{
+      tEl.classList.remove('wrong');
+      dEl.classList.remove('wrong');
+    },700);
+  }
+}
+
+function fb(type,msg){
+  const el=document.getElementById('fb');
+  el.className='feedback'+(type?' '+type:'');
+  el.textContent=msg;
+}
+
+function showResult(){
+  document.getElementById('main-game').style.display='none';
+  const r=document.getElementById('result');
+  r.className='result show';
+  const n=allPairs.length;
+  const medal=errors===0?'🥇':errors<=3?'🥈':errors<=6?'🥉':'🎖️';
+  const title=errors===0?'Parfait, aucune erreur !':errors<=3?'Excellent !':errors<=6?'Bien joué !':'Continue à t\'entraîner !';
+  const msg=errors===0?'Tu maîtrises parfaitement le vocabulaire des cyberviolences.':
+            errors<=3?'Tu as bien compris la plupart des termes.':
+            errors<=6?'Relis les définitions pour bien mémoriser.':'Recommence pour améliorer ton score !';
+  r.innerHTML=`
+<span class="medal">${medal}</span>
+<h2>${title}</h2>
+<p>${msg}</p>
+<div class="result-grid">
+  <div class="rstat"><span class="rstat-val">${n}</span><span class="rstat-lbl">Associations</span></div>
+  <div class="rstat"><span class="rstat-val">${errors}</span><span class="rstat-lbl">Erreur${errors>1?'s':''}</span></div>
+  <div class="rstat"><span class="rstat-val">${Math.max(0,100-errors*5)} %</span><span class="rstat-lbl">Score</span></div>
+</div>
+<div style="background:var(--warn-bg);border:1px solid #F5D78A;border-radius:var(--radius);padding:12px 16px;margin-bottom:1.5rem;text-align:left">
+  <p style="font-size:12px;font-weight:600;color:var(--warn);margin-bottom:5px">Rappel — En cas de cyberviolence :</p>
+  <p style="font-size:12px;color:var(--warn);line-height:1.6">
+    → Appelle le <strong>3018</strong> (numéro national, gratuit, 7j/7)<br>
+    → Signale sur <strong>internet-signalement.gouv.fr</strong><br>
+    → En parle à un adulte de confiance
+  </p>
+</div>
+<button class="replay-btn" onclick="reset()">↺ Rejouer</button>`;
+}
+
+reset();
+</script>
+</body>
+</html>
